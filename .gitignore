@@ -1,17 +1,24 @@
+
+· GITIGNORE
 .env
 .DS_Store
-
+ 
 # Python
 __pycache__/
 *.pyc
 .ipynb_checkpoints/
-
+ 
 # Virtual environment
 venv/
-
+ 
 # Vector DB / embeddings cache (added later in the project)
 chroma_db/
-
+ 
+# Large trained model files (regenerate by re-running the notebooks)
+models/transformer_final/
+models/transformer_checkpoints/
+ 
 # OS / editor junk
 .vscode/
 Thumbs.db
+ 
