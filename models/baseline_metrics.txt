@@ -1,0 +1,17 @@
+Classical TF-IDF + Logistic Regression (class_weight='balanced') baseline
+
+                         precision    recall  f1-score   support
+
+Limitation of liability       0.53      0.87      0.66        38
+ Unilateral termination       0.52      0.84      0.65        38
+      Unilateral change       0.52      0.68      0.59        38
+        Content removal       0.31      0.92      0.46        13
+      Contract by using       0.45      0.78      0.57        23
+          Choice of law       0.71      0.92      0.80        13
+           Jurisdiction       0.86      0.75      0.80        16
+            Arbitration       0.33      0.86      0.48         7
+
+              micro avg       0.50      0.81      0.62       186
+              macro avg       0.53      0.83      0.63       186
+           weighted avg       0.53      0.81      0.63       186
+            samples avg       0.08      0.09      0.08       186

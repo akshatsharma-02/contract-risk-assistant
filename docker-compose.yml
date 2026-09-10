@@ -1,0 +1,42 @@
+services:
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    container_name: clause-detector-api
+    # Use 'expose' instead of 'ports' to keep it internal only
+    expose:
+      - "8000"
+    volumes:
+      # Mount models folder for model loading
+      - ./models:/app/models:ro
+    environment:
+      - PYTHONUNBUFFERED=1
+    networks:
+      - clause-detector-network
+    restart: unless-stopped
+
+  streamlit:
+    build:
+      context: ./streamlit
+      dockerfile: Dockerfile
+    container_name: clause-detector-streamlit
+    # Only the Streamlit app is publicly accessible
+    ports:
+      - "8501:8501"
+    volumes:
+      # Mount data folder for schema/reference data
+      - ./data:/app/data:ro
+    environment:
+      - API_URL=http://api:8000
+      - PYTHONUNBUFFERED=1
+    networks:
+      - clause-detector-network
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+
+networks:
+  clause-detector-network:
+    driver: bridge
