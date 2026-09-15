@@ -1,0 +1,12 @@
+Interpretability Analysis: Leave-One-Out Word Importance
+============================================================
+
+Example 1: Synthetic sentence, category 'Unilateral termination'
+Sentence: we may terminate your account at any time for any reason without notice
+Finding: single dominant word ('terminate', contributing 0.741 of 0.924 probability)
+
+Example 2: Real test-set sentence, category 'Choice of law'
+Sentence: these terms and any action related thereto will be governed by the laws of the state of california without regard to its conflict of laws provisions . 
+
+Finding: importance distributed across several jurisdiction-related words
+('california', 'conflict', 'governed', 'regard') rather than one dominant word
