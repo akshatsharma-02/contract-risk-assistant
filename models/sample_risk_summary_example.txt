@@ -1,0 +1,18 @@
+Example risk summary output on sample_tos.pdf
+============================================================
+
+Here is a plain-English breakdown of the flagged clauses:
+
+1. **Acceptance of Terms:** Simply creating an account or using the service means you automatically agree to all of their rules, even if you never read them. You should be aware that you are entering a binding contract the moment you start using the service.
+
+2. **Changes to Terms:** The company can change the rules of this contract whenever they want without warning you. This means the terms you agree to today could silently change tomorrow to something much less favorable to you.
+
+3. **Continued Use after Changes:** If the company updates the terms and you keep using the service, you automatically accept the new rules. Because they do not have to notify you of changes, you could unknowingly agree to brand-new conditions just by logging in.
+
+4. **Account Termination:** The company can shut down your account at any time, for any reason, without telling you beforehand. You risk losing access to your data, files, or paid features instantly with no way to make the company compensate you.
+
+5. **Limitation of Liability:** If the company makes a mistake that causes you financial loss or harm, they will not pay for those indirect damages. This protects the company from paying you back, even if their service fails or breaks.
+
+6. **Dispute Resolution:** If a major problem arises, you give up your right to sue the company in a standard court or join a class action lawsuit. You will have to use a private decision-maker (an arbitrator) instead, which can be costly and harder for individual consumers to win.
+
+7. **Governing Law:** Any legal fights will be decided using Delaware state laws, no matter where you actually live. This matters because local consumer protection laws in your home state might not apply to help you.
