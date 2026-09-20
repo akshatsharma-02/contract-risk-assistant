@@ -149,7 +149,7 @@ class RiskSummaryRequest(BaseModel):
     document_id: str
 
 class RiskSummaryResponse(BaseModel):
-    summary: str
+    clauses: list
     flagged_clause_count: int
 
 
@@ -167,6 +167,10 @@ def deduplicate_sentences(sentences):
         if not any(s in longer for longer in kept):
             kept.append(s)
     return [s for s in sentences if s in kept]
+
+
+
+import json
 
 @app.post("/risk-summary")
 def get_risk_summary(request: RiskSummaryRequest):
@@ -190,22 +194,40 @@ def get_risk_summary(request: RiskSummaryRequest):
             flagged_clauses.append({"sentence": sentence, "labels": flagged_labels})
 
     if not flagged_clauses:
-        return RiskSummaryResponse(summary="No significant risk clauses were detected.", flagged_clause_count=0)
+        return RiskSummaryResponse(clauses=[], flagged_clause_count=0)
 
     clauses_text = ""
     for item in flagged_clauses:
         clauses_text += f"- Clause: \"{item['sentence']}\"\n  Flagged as: {', '.join(item['labels'])}\n\n"
 
-    prompt = f"""You are a legal assistant helping a non-lawyer understand risky clauses in a contract.
+    prompt = f"""You are a legal assistant analyzing risky contract clauses.
 
 Below are clauses flagged as potentially unfair, with their category.
 
 {clauses_text}
 
-For each, write a short plain-English explanation (1-2 sentences) of what it means and why it matters. Avoid legal jargon. Do not add clauses beyond what's listed. Format as a numbered list."""
+For each clause, respond with a JSON array. Each element must have exactly these fields:
+- "clause": the original clause text (shortened to under 100 characters if needed)
+- "category": the flagged category
+- "explanation": a 1-2 sentence plain-English explanation of what it means and why it matters
+- "severity": one of "high", "medium", or "low" based on how much it could harm the average consumer
 
-    summary_text = call_gemini_with_retry(prompt)
-    return RiskSummaryResponse(summary=summary_text, flagged_clause_count=len(flagged_clauses))
+Respond with ONLY the JSON array, no other text, no markdown code fences."""
+
+    raw_response = call_gemini_with_retry(prompt)
+
+    cleaned = raw_response.strip()
+    if cleaned.startswith("```"):
+        cleaned = cleaned.split("```")[1]
+        if cleaned.startswith("json"):
+            cleaned = cleaned[4:]
+    cleaned = cleaned.strip()
+
+    parsed_clauses = json.loads(cleaned)
+
+    return RiskSummaryResponse(clauses=parsed_clauses, flagged_clause_count=len(flagged_clauses))
+
+
 
 #Handle when Error:503(Google server overloaded)
 import time
@@ -213,7 +235,7 @@ def call_gemini_with_retry(prompt, max_retries=3):
     for attempt in range(max_retries):
         try:
             response = gemini_client.models.generate_content(
-                model="gemini-3.6-flash",
+                model="gemini-3.5-flash-lite",
                 contents=prompt
             )
             return response.text
