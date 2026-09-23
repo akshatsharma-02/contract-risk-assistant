@@ -24,8 +24,9 @@ if "document_id" in st.session_state:
 
 #Upload button
 import requests
+import os
 
-API_URL = "http://127.0.0.1:8000"
+API_URL = os.environ.get("API_URL", "http://127.0.0.1:8000")
 
 uploaded_file = st.file_uploader("Upload a contract (PDF)", type=["pdf"])
 

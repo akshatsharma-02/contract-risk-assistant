@@ -6,8 +6,19 @@ from dotenv import load_dotenv
 import os
 from google import genai
 import re
+import chromadb
 
-load_dotenv("../.env")
+#Externalizing the paths
+MODEL_PATH = os.environ.get("MODEL_PATH", "../models/transformer_final")
+CHROMA_PATH = os.environ.get("CHROMA_PATH", "../data/chroma_db")
+ENV_PATH = os.environ.get("ENV_PATH", "../.env")
+
+classifier_model = AutoModelForSequenceClassification.from_pretrained(MODEL_PATH)
+classifier_tokenizer = AutoTokenizer.from_pretrained(MODEL_PATH)
+
+chroma_client = chromadb.PersistentClient(path=CHROMA_PATH)
+
+load_dotenv(ENV_PATH)
 gemini_client = genai.Client(api_key=os.environ.get("GEMINI_API_KEY"))
 
 app = FastAPI(title="Contract Risk Assistant API")
@@ -16,8 +27,8 @@ LABEL_NAMES = ['Limitation of liability', 'Unilateral termination', 'Unilateral 
                'Content removal', 'Contract by using', 'Choice of law', 'Jurisdiction', 'Arbitration']
 
 print("Loading classifier model...")
-classifier_model = AutoModelForSequenceClassification.from_pretrained("../models/transformer_final")
-classifier_tokenizer = AutoTokenizer.from_pretrained("../models/transformer_final")
+classifier_model = AutoModelForSequenceClassification.from_pretrained(MODEL_PATH)
+classifier_tokenizer = AutoTokenizer.from_pretrained(MODEL_PATH)
 
 print("Loading embedding model...")
 embedding_model = SentenceTransformer("all-MiniLM-L6-v2")
