@@ -39,7 +39,7 @@ if uploaded_file is not None:
             if response.status_code == 200:
                 data = response.json()
                 st.session_state["document_id"] = data["document_id"]
-                st.success(f"Document processed! Found {data['num_chunks']} sections.")
+                st.success("Document ready. Generate a risk summary or ask a question below.")
             else:
                 st.error(f"Upload failed: {response.text}")
 

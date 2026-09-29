@@ -1,0 +1,9 @@
+.git
+.gitignore
+.env
+venv/
+notebooks/
+data/
+models/transformer_checkpoints/
+**/__pycache__/
+*.pyc
