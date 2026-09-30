@@ -2,11 +2,26 @@ import streamlit as st
 
 st.set_page_config(page_title="Contract Risk Assistant", page_icon="⚖️")
 
-st.markdown("""
+import base64
+
+def get_base64_image(image_path):
+    with open(image_path, "rb") as f:
+        data = f.read()
+    return base64.b64encode(data).decode()
+
+bg_image = get_base64_image("static/background.jpg")
+
+st.markdown(f"""
 <style>
-.stApp {
-    background: linear-gradient(135deg, #0E1117 0%, #1a2332 50%, #0E1117 100%);
-}
+.stApp {{
+    background-image:
+        linear-gradient(rgba(8,11,16,0.72), rgba(8,11,16,0.85)),
+        url("data:image/jpeg;base64,{bg_image}");
+    background-size: cover;
+    background-position: center 30%;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+}}
 </style>
 """, unsafe_allow_html=True)
 
