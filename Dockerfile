@@ -11,14 +11,14 @@ RUN pip install --no-cache-dir -r api-requirements.txt -r streamlit-requirements
 
 # Bake the embedding model into the image so cold starts don't download it
 RUN python -c "from sentence_transformers import SentenceTransformer; SentenceTransformer('all-MiniLM-L6-v2')"
+RUN python -c "from transformers import AutoModelForSequenceClassification, AutoTokenizer; AutoModelForSequenceClassification.from_pretrained('akshat-02/contract-risk-classifier'); AutoTokenizer.from_pretrained('akshat-02/contract-risk-classifier')"
 
 COPY api/ /app/api/
 COPY streamlit/ /app/streamlit/
-COPY models/transformer_final/ /app/models/transformer_final/
 COPY start.sh /app/start.sh
 RUN sed -i 's/\r$//' /app/start.sh && chmod +x /app/start.sh
 
-ENV MODEL_PATH=/app/models/transformer_final
+ENV MODEL_PATH=akshat-02/contract-risk-classifier
 ENV CHROMA_PATH=/tmp/chroma_db
 ENV API_URL=http://127.0.0.1:8000
 
