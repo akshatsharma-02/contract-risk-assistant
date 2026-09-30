@@ -14,11 +14,15 @@ st.title("⚖️ Contract Risk Assistant")
 st.write("Upload a contract or Terms of Service document to check for risky clauses and ask questions about it.")
 
 #The reset button
+if "uploader_key" not in st.session_state:
+    st.session_state["uploader_key"] = 0
+
 if "document_id" in st.session_state:
     if st.button("🔄 Start Over with a New Document"):
         for key in ["document_id", "risk_clauses", "chat_history"]:
             if key in st.session_state:
                 del st.session_state[key]
+        st.session_state["uploader_key"] += 1
         st.rerun()
 
 
@@ -28,7 +32,11 @@ import os
 
 API_URL = os.environ.get("API_URL", "http://127.0.0.1:8000")
 
-uploaded_file = st.file_uploader("Upload a contract (PDF)", type=["pdf"])
+uploaded_file = st.file_uploader(
+    "Upload a contract (PDF)",
+    type=["pdf"],
+    key=f"uploader_{st.session_state['uploader_key']}"
+)
 
 if uploaded_file is not None:
     if st.button("Analyze Document"):

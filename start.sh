@@ -8,7 +8,7 @@ uvicorn app:app --host 127.0.0.1 --port 8000 &
 echo "Waiting for backend to finish loading models..."
 python - <<'EOF'
 import time, urllib.request
-for _ in range(120):
+for _ in range(300):
     try:
         urllib.request.urlopen("http://127.0.0.1:8000/", timeout=2)
         print("Backend is ready.")
